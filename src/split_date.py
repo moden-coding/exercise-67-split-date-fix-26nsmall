@@ -6,8 +6,11 @@ import numpy as np
 
 
 def split_date():
-    pass
-
+    df = pd.read_csv("src\Helsingin_pyorailijamaarat.csv", sep=";")
+    Päivämäärä =(df["Päivämäärä"].str.split())
+    newdf = pd.DataFrame(Päivämäärä)
+    print(newdf)
+    
 def main():
     split_date()
        
