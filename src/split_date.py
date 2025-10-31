@@ -7,9 +7,18 @@ import numpy as np
 
 def split_date():
     df = pd.read_csv("src\Helsingin_pyorailijamaarat.csv", sep=";")
-    Päivämäärä =(df["Päivämäärä"].str.split())
-    newdf = pd.DataFrame(Päivämäärä)
-    print(newdf)
+    todrop = df.columns
+    df[["Weekday", "Day", "Month", "Year", "Hour"]] =df["Päivämäärä"].str.split(expand = True)
+    df = df.drop(todrop, axis=1)
+    df = df.dropna()
+    df["Weekday"]= df["Weekday"].replace({"ma": "Mon", "ti": "Tue", "ke" : "Wed", "to": "Thu", "pe":"Fri", "la":"Sat", "su":"Sun"})
+    df["Month"]= df["Month"].replace({ "tammi": 1, "helmi": 2, "maalis": 3, "huhti": 4, "touko": 5, "kesä": 6, "heinä": 7, "elo": 8, "syys": 9, "loka": 10, "marras": 11, "joulu": 12 }).map(int)
+    df["Hour"] = df["Hour"].str[:2].map(int)
+    df["Day"] = df["Day"].map(int)
+    df["Year"] = df["Year"].map(int)
+    print(df)
+    return df
+
     
 def main():
     split_date()
